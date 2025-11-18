@@ -19,7 +19,7 @@ function Header() {
     const navigate = useNavigate();
     
     // active l'interceptor du axios config
-    useAxiosInterceptor();
+    // useAxiosInterceptor();
 
     // Cette fonction peut être utilisée pour rafraîchir
     //  le contexte utilisateur si nécessaire
