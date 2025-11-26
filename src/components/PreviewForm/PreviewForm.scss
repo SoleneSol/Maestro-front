@@ -1,5 +1,5 @@
-@use "../var.scss";
-@use "../mixin.scss";
+@use "/src/mixin";
+@use "/src/var";
 
 #addPreview, #updatePreview {
     margin: 3rem;
@@ -20,20 +20,30 @@
     margin: 1rem;
 }
 
-.form__title {
+.preview__form__header {
+    display: flex;
     text-align: center;
-    font-size: var.$font-size-h2;
+    font-size: 1.5rem;
+    font-family: var.$font-main;
+    padding: 0 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview__forms__title {
+    text-align: center;
+    font-size: 1.5rem;
     font-family: var.$font-main;
 }
+
+
 
 .form__group__container {
 
     @include mixin.desktop {
         display: flex;
         flex-direction: row;
-
-    justify-content: space-between;
-        // align-content: flex-start;
+        justify-content: space-between;
     }
 
 }
@@ -92,4 +102,16 @@
 
 .preview__form__button--delete:hover {
     border: solid 1px var.$color-admin;
+}
+
+.preview__close__icon {
+    color: white;
+    background-color: lightgray;
+    border: none;
+}
+
+.preview__close__icon:hover {
+    cursor: pointer;
+    background-color: grey;
+    border: none;
 }

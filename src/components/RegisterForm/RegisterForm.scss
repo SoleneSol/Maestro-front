@@ -1,108 +1,114 @@
+@use "/src/mixin";
+@use "/src/var";
 
-@use "../var.scss";
-@use "../mixin.scss";
-
-h2 {
-  text-align: center;
-  padding-top: 3rem;
-  font-family: var.$font-main;
-  font-size: var.$font-size-h2; // plus petit pour mobile d'abord
+.register-form-global {
+    padding-top: 2rem;
 }
 
-p {
-  text-align: center;
-  padding-top: 1rem;
+.register-form-headtitle {
+    text-align: center;
+    // padding-top: 3rem;
+    font-family: var.$font-main;
+    font-size: var.$font-size-h2; // plus petit pour mobile d'abord
+}
+
+.register-form-subtitle {
+    text-align: center;
+    padding-top: 1rem;
 }
 
 .register-form-container {
-  position: relative; // pas absolute sur mobile pour plus de fluidité
-  width: 90vw; // largeur relative à la fenêtre, fluide au zoom
-  max-width: 400px;
-  margin: 4rem auto;
-  padding: 2rem;
+    position: relative; // pas absolute sur mobile pour plus de fluidité
+    width: 90vw; // largeur relative à la fenêtre, fluide au zoom
+    max-width: 400px;
+    margin: 4rem auto;
+    padding: 2rem;
 
-  .register-form-item {
-    margin-bottom: 1rem;
-  }
-
-  .register-form-button {
-    display: block;
-    margin: 2rem auto 0;
-    border-radius: 50px;
-    padding: 1rem 2rem;
-    background-color: var.$color-admin;
-    color: #000;
-    border: none;
-  }
-
-  p {
-    text-align: center;
-    padding-top: 1rem;
-
-    .register-link {
-      margin-left: 0.5rem;
-      background: none;
-      border: none;
-      color: var.$color-admin;
-      text-decoration: underline;
-      cursor: pointer;
+    .register-form-item {
+        margin-bottom: 1rem;
     }
-  }
+
+    .register-form-button {
+        display: block;
+        margin: 2rem auto 0;
+        border-radius: 50px;
+        padding: 1rem 2rem;
+        background-color: var.$color-admin;
+        color: #000;
+        border: none;
+    }
+
+    .register-text-link {
+        text-align: center;
+        padding-top: 1rem;
+
+        .register-link {
+            margin-left: 0.5rem;
+            background: none;
+            border: none;
+            color: var.$color-admin;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
 }
 
 .password-wrapper {
-  position: relative;
+    position: relative;
 
-  input {
-    width: 100%;
-    padding-right: 40px; // laisse la place pour l’icône
-  }
-
-  .show-password-btn {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #555; // couleur de base
-    transition: opacity 0.2s ease;
-
-    svg {
-      width: 20px;
-      height: 20px;
-      margin-bottom: 1rem;
+    input {
+        width: 100%;
+        padding-right: 40px; // laisse la place pour l’icône
     }
 
-    &:hover {
-      opacity: 0.7;
+    .show-password-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        bottom: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #555;
+        transition: opacity 0.2s ease;
+
+        svg {
+            width: 20px;
+            height: 20px;
+            margin-bottom: 1rem;
+        }
+
+        &:hover {
+            opacity: 0.7;
+        }
     }
-  }
 }
 
-
-
 @include mixin.desktop {
-  h2 {
-    padding-top: 6rem;
-    font-size: var.$font-size-h2;
-  }
-
-  .register-form-container {
-  position: relative; 
-  width: 90vw; // largeur relative à la fenêtre, fluide au zoom
-  max-width: 400px;
-  margin: 4rem auto;
-  padding: 2rem;
-
-    .register-form-item {
-      margin-bottom: 1.5rem;
+    .register-form-headtitle {
+        // padding-top: 6rem;
+        font-size: var.$font-size-h2;
     }
 
-    p {
-      padding-top: 1.5rem;
+    .register-form-container {
+        position: relative;
+        width: 90vw; // largeur relative à la fenêtre, fluide au zoom
+        max-width: 400px;
+        margin: 4rem auto;
+        padding: 2rem;
+
+        .register-form-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .register-text-link {
+            padding-top: 1.5rem;
+        }
     }
-  }
+}
+
+.format-password-item {
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
 }

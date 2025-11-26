@@ -1,5 +1,5 @@
-@use "../style/var.scss";
-@use "../style/mixin.scss";
+@use "/src/mixin";
+@use "/src/var";
 
 .contact-page {
     width: 100%;
@@ -11,15 +11,15 @@
 
 .header-contact {
     text-align: center;
-    padding-top: 4rem;
+    // padding-top: 4rem;
 
-    h2 {
+    .contact__page__title {
         margin-bottom: 1rem;
         font-family: var.$font-main;
         font-size: var.$font-size-h2;
     }
 
-    p {
+    .p {
         font-size: 1rem;
     }
 }
@@ -54,9 +54,9 @@
 
 @include mixin.desktop {
     .header-contact {
-        padding-top: 6rem;
+        // padding-top: 6rem;
 
-        h2 {
+        .contact__page__title {
             font-size: var.$font-size-h2;
         }
     }

@@ -1,12 +1,21 @@
 import { useEffect, useState } from "react";
 import { findAll, deleteMessage, update } from "../../api/apiMessageContact";
 import "./ContactRequestList.scss";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import { notify } from "../Toast/Toast.jsx";
 
 function ContactRequestList() {
     /* request est une variable d'état contenant la liste de demande de contact 
     setRequest est la fonction permettant de mettre à jour cet état
     l'état initial est un tableau vide*/
     const [requests, setRequests] = useState([]);
+
+    const [requestToDelete, setRequestToDelete] = useState("");
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     /* getAllRequestList est une fonction asynchrome qui appelle findAll() 
     pour récupérer toutes les demandes de contact depuis l'API */
@@ -57,16 +66,16 @@ function ContactRequestList() {
             ) : (
                 requests.map((request) => (
                     <div key={request.id} className="request">
-                        <h4>Email : {request.mail}</h4>
-                        <p>Message : {request.message}</p>
-                        <p>
+                        <h4 className="contact-title">Email : {request.mail}</h4>
+                        <p className="contact-texte">Message : {request.message}</p>
+                        <p className="contact-status">
                             {/* pour mettre un espace entre statut : est le mot
                             qui suit on utilise ce signe {" "} .
                             
                             Si une valeur est connue on
                             affiche cette valeur sinom on affiche "non lu" par
                             défaults */}
-                            Status :{" "}
+                            Statut :{" "}
                             {request.status ? request.status : "non lu"}
                         </p>
 
@@ -86,7 +95,10 @@ function ContactRequestList() {
 
                             <button
                                 className="delete-button"
-                                onClick={() => handleDelete(request.id)}
+                                onClick={() => {
+                                    setRequestToDelete(request);
+                                    handleShow();
+                                }}
                             >
                                 Supprimer
                             </button>
@@ -94,6 +106,40 @@ function ContactRequestList() {
                     </div>
                 ))
             )}
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Supprimer la demande de contact</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Etes-vous sûr de vouloir supprimer la demande de contact de
+                    "{requestToDelete.mail}" ?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="secondary"
+                        onClick={() => {
+                            handleClose();
+                            setRequestToDelete("");
+                        }}
+                    >
+                        Annuler
+                    </Button>
+                    <Button
+                        variant="primary"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleDelete(requestToDelete.id);
+                            setRequestToDelete("");
+                            handleClose();
+                            notify(
+                                "Demande de contact supprimée avec succès !"
+                            );
+                        }}
+                    >
+                        Supprimer la demande de contact
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }

@@ -1,5 +1,5 @@
-@use "../var.scss";
-@use "../mixin.scss";
+@use "/src/mixin";
+@use "/src/var";
 
 
 
@@ -51,6 +51,15 @@
 .form__champsObligatoire {
     margin-top: var.$spacing-xlarge;;
     font-weight: bolder;
+}
+
+.form__deadline {
+    margin-top: var.$spacing-xlarge;
+    font-family: var.$font-alt;
+}
+
+.d-lg-block {
+    margin-top: var.$spacing-large;
 }
 
 

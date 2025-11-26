@@ -1,12 +1,13 @@
-import { useContext, useEffect, useState } from "react";
-import UserContext from "../../UserContext.jsx";
+import { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { updatePreview, deletePreview } from "../../api/apiPreview.js";
 import Modal from 'react-bootstrap/Modal';
+import { notify } from "../Toast/Toast.jsx";
+import { XLg } from "react-bootstrap-icons";
 
 
-function UpdatePreviewForm({ id, genreList = [], preview, onSaved = () => {} }) {
+function UpdatePreviewForm({ setSelectedPreview, setActiveItem, id, genreList = [], preview, onSaved = () => {} }) {
 
     // un seul state pour tout le formulaire (genres stocke les ids)
     const [formData, setFormData] = useState(() => ({
@@ -19,16 +20,12 @@ function UpdatePreviewForm({ id, genreList = [], preview, onSaved = () => {} }) 
     }));
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState(null);
-    // Modal
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const {userIs} = useContext(UserContext)
-    
     // il faut recevoir les infos de la preview
-
     function toggleGenre(genreId) {
         setFormData(prev => {
             // on regarde si genreId est déjà dans la liste
@@ -49,16 +46,17 @@ function UpdatePreviewForm({ id, genreList = [], preview, onSaved = () => {} }) 
             title: formData.title,
             date: formData.date || null,
             isStar: formData.isStar,
-            // envoi au backend sous forme  "1,2"
             genres: formData.genres.length ? formData.genres.join(',') : ""
         };
 
         try {
             await updatePreview(id, payload); 
             onSaved();
+            notify("Extrait modifié avec succès !", "success");
         } catch (err) {
             console.error("Erreur mise à jour preview:", err);
             setError("Échec de la mise à jour.");
+            notify("Erreur lors de la modification de l'extrait", "error");
         } finally {
             setSaving(false);
         }
@@ -68,13 +66,14 @@ function UpdatePreviewForm({ id, genreList = [], preview, onSaved = () => {} }) 
         e.preventDefault();
         setSaving(true);
         setError(null);
-        // alert "êtes vous sur de vouloir supprimer l'extrait ?"
         try {
             await deletePreview(id);
             onSaved();
+            notify("Extrait supprimé avec succès !", "success");
         } catch (err) {
             console.error("Erreur lors de la suppression de l'extrait : ", err);
             setError("Échec de la suppression.");
+            notify("Erreur lors de la suppression de l'extrait", "error");
         } finally {
             setSaving(false);
         }
@@ -98,11 +97,15 @@ function UpdatePreviewForm({ id, genreList = [], preview, onSaved = () => {} }) 
 
         <>
             {error && <p className="text-danger">{error}</p>}
-            <Form onSubmit={handleSubmit} id='updatePreview' method='patch'>
-                <h2 className="form__title">Modifier l'extrait</h2>
+            <Form onSubmit={handleSubmit} id='updatePreview' method='patch' aria-labelledby="update-preview-title">
+                <div className="preview__form__header">
+                    <h2 className="preview__forms__title" id="update-preview-title">Modifier l'extrait</h2>
+                    <Button aria-label="Fermer le formulaire" onClick={() => {setSelectedPreview(null); setActiveItem(null)}} className="preview__close__icon"><XLg aria-hidden='true' size={20}/></Button>
+                </div>
+                <p className="form__mandatory">Les champs marqués d'un (*) sont obligatoires.</p>
                 <Form.Group className="mb-3 form__group">
-                    <Form.Label className='form__label' htmlFor='previewTitle'>Titre de l'extrait</Form.Label>
-                    <Form.Control className='form__input' value={formData.title} onChange={(e) => setFormData(prev => ({...prev, title: e.target.value}))} id='previewTitle' name='title' type="text" placeholder="Entrer le titre" />
+                    <Form.Label className='form__label' htmlFor='previewTitle'>Titre de l'extrait *</Form.Label>
+                    <Form.Control aria-required='true' required className='form__input' value={formData.title} onChange={(e) => setFormData(prev => ({...prev, title: e.target.value}))} id='previewTitle' name='title' type="text" placeholder="Entrer le titre" />
                 </Form.Group>
                 <Form.Group className="mb-3 form__group">
                     <Form.Label className='form__label' htmlFor='previewDate'>Date de l'extrait</Form.Label>
@@ -116,11 +119,12 @@ function UpdatePreviewForm({ id, genreList = [], preview, onSaved = () => {} }) 
                         name='isStar'
                         type="switch"
                         id="star-switch"
+                        aria-label="Afficher cet extrait sur la page d'accueil"
                         label="Rendre l'extrait star"
                     />
                 </Form.Group>
-                <Form.Group className="mb-3 form__group">
-                    <Form.Label className='form__label' htmlFor='genre'>Ajoute un ou plusieurs genres</Form.Label>
+                <Form.Group aria-labelledby="update-preview-label" className="mb-3 form__group">
+                    <Form.Label id="update-preview-label" className='form__label' htmlFor='genre'>Ajoute un ou plusieurs genres</Form.Label>
                     {genreList.length > 0 && genreList.map((genre) => (
                         <Form.Check key={genre.id}
                             className='checkBox form__input'
@@ -144,11 +148,11 @@ function UpdatePreviewForm({ id, genreList = [], preview, onSaved = () => {} }) 
                     {saving ? "Suppression..." : "Supprimer l'extrait"}
                     </Button>
                 </div>
-                <Modal show={show} onHide={handleClose}>
+                <Modal show={show} onHide={handleClose} aria-labelledby='modal-update-preview-title' aria-describedby='modal-update-preview-desc'>
                     <Modal.Header closeButton>
-                    <Modal.Title>Supprimer l'extrait</Modal.Title>
+                    <Modal.Title id="modal-update-preview-title">Supprimer l'extrait</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Etes-vous sûr de vouloir supprimer l'extrait "{preview.title}" ?</Modal.Body>
+                    <Modal.Body id="modal-update-preview-desc">Etes-vous sûr de vouloir supprimer l'extrait "{preview.title}" ?</Modal.Body>
                     <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Annuler

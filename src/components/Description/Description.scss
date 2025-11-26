@@ -1,5 +1,5 @@
-@use "../var.scss";
-@use "../mixin.scss";
+@use "/src/mixin";
+@use "/src/var";
 
 .description__container {
     display: flex;
@@ -8,22 +8,32 @@
 
     @include mixin.desktop {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-items: start;
+        align-items: center;
     }
 }
 
-.description__title {
+.description__image__container {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding-top: 20px;
+}
 
+.description__title {
+    font-family: var.$font-main;
+    font-size:  var.$font-size-h1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 1rem;
+    text-align: center;
+    align-items: baseline;
+    
     @include mixin.desktop {
+        font-size: 1rem;
+        align-self: flex-start;
         grid-column: 2;
         grid-row: 1;
-        align-items: flex-start;
         padding-top: 0;
+        margin-top: 20px;
         margin-left: 10px;
     }
 }
@@ -32,28 +42,31 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 1rem;
     color: #000000;
-    font-family: var.$font-main;
-    font-size: 0.7rem;
+    font-family: var.$font-alt;
+    font-size: var.$font-size-base;
+    line-height: 2;
     text-align: left;
+    padding-left: 24px;
+    padding-right: 24px;
 
     @include mixin.desktop {
         grid-column: 2;
         grid-row: 1;
         align-items: flex-start;
         padding: 0;
-        margin-top: 70px;
-        margin-left: 10px;
+        margin-top: 5.5rem;
+        padding-right: 30px;
+        padding-left: 30px;
         font-size: var.$font-size-base;
     }
 }
 
 .description__image {
     width: 100%;
-    max-width: 500px;
     height: auto;
-    padding-top: 20px;
+    padding: .7rem;
     object-fit: cover;
 
     @include mixin.desktop {
@@ -62,8 +75,48 @@
         grid-column: 1;
         grid-row: 1;
         align-self: center;
-        padding-top: 0;
-        padding-bottom: 20px;
-        padding-top: 20px;
+        padding: 1.5rem 1rem;
     }
+}
+
+.icon-container {
+    padding: 1rem;
+}
+
+.update__description {
+    margin: 1rem;
+    padding: 1rem;
+    border: solid 1px var.$color-admin;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @include mixin.desktop {
+        margin: 3rem;
+        padding: 3rem;
+    }
+}
+
+.description__form__title {
+    display: flex;
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: var.$font-main;
+    padding: 0 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.description__close__icon {
+    color: white;
+    background-color: lightgray;
+    border: none;
+}
+
+.description__close__icon:hover {
+    cursor: pointer;
+    background-color: grey;
+    border: none;
 }

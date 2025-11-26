@@ -1,5 +1,5 @@
-@use "../../components/var.scss";
-@use "../../components/mixin";
+@use "/src/mixin";
+@use "/src/var";
 
 .addCompany-button {
     background-color: var.$color-client;

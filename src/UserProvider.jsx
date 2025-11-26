@@ -6,10 +6,10 @@ export function UserProvider({children}) {
     const [refreshList,setrefreshList] = useState('false');
 
     function needRefreshProjectList(){
-        setrefreshList(true);
+        setrefreshList(true); // il faut recharger
     }
     function desactiveRefreshProjectList(){
-        setrefreshList(false);
+        setrefreshList(false); // pas besoin de recharger
     }
 
 

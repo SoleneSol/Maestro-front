@@ -1,5 +1,5 @@
-@use "../mixin";
-@use "../var";
+@use "/src/mixin";
+@use "/src/var";
 
 .full-client-card-container {
     padding: 0rem;
@@ -8,7 +8,6 @@
 }
 
 .client-card-row {
-    // border: solid 1px #e07a5f;
     border-radius: 10px;
     box-shadow: 2px 2px 5px 2px rgba(133, 132, 132, 0.31);
     margin-bottom: 0.5rem;

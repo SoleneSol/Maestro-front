@@ -1,7 +1,19 @@
-.notfound-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; 
-    flex-direction: column; 
+.title-main {
+    text-align: center;
+    padding-top: 20rem;
+}
+
+.subtitle {
+    text-align: center;
+    padding-top: 1rem;
+}
+
+.text-center {
+    text-align: center;
+    padding-top: 1rem;
+}
+
+.link-container {
+    text-align: center;
+    padding-top: 1rem;
 }

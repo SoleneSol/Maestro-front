@@ -1,11 +1,18 @@
-@use "../style/var.scss";
-@use "../style/mixin.scss";
+@use "/src/mixin";
+@use "/src/var";
 
 
 .projects__container {
     max-height: 400px;
     overflow-y: auto;
 }
+
+.card-body {
+    // border: solid 1px var.$color-admin;
+    border-radius: 10px;    
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
 
 .deadline__badge {
     margin-top: 12px;
@@ -29,6 +36,16 @@
     border-color: var.$color-admin;
 }
 
+.card-body .project__card__row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.project__trash__icon:hover {
+    cursor: pointer;
+}
 
 
 @media (min-width: var.$breakpoint-desktop) {

@@ -5,6 +5,8 @@ import UserContext from "../../UserContext.jsx";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
 import "./LoginForm.scss";
+import { notify } from "../Toast/Toast.jsx";
+import DOMPurify from 'dompurify';
 
 function LoginForm({ setUserHasAccount }) {
     const [email, setEmail] = useState("");
@@ -15,7 +17,10 @@ function LoginForm({ setUserHasAccount }) {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        const loginData = { email, password };
+
+        const cleanEmail = DOMPurify.sanitize(email);  
+
+        const loginData = { email: cleanEmail, password };  
 
         try {
             const userInfo = await loginUser(loginData);
@@ -23,10 +28,11 @@ function LoginForm({ setUserHasAccount }) {
                 console.log("userInfo", userInfo);
                 loginProvider(userInfo.user.role);
                 navigate("/");
+                notify("Vous êtes connecté.");
             }
         } catch (error) {
             console.error("Erreur de connexion :", error);
-            alert("Échec de la connexion. Vérifiez vos identifiants.");
+            notify("Échec de la connexion. Vérifiez vos identifiants.");
         }
     }
 
@@ -36,15 +42,17 @@ function LoginForm({ setUserHasAccount }) {
     }
 
     return (
-        <>
-            <h2>Connexion</h2>
-            <div className="login-form-container">
+        <div className="login-form-global">
+            <h1 className="login-form-headtitle">Connexion</h1>
+            <div className="login-form-container"
+                aria-label="Formulaire de connexion utilisateur">
                 <Form
                     className="login-form"
                     method="post"
                     onSubmit={handleSubmit}
+                    aria-describedby="login-form-info"
                 >
-                    {/* EMAIL */}
+   {/* EMAIL */}
                     <Form.Group className="login-form-item" controlId="email">
                         <Form.Label>Email</Form.Label>
                         <Form.Control
@@ -53,6 +61,9 @@ function LoginForm({ setUserHasAccount }) {
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
                             required
+                            aria-required="true"
+                            aria-label="Adresse e-mail"
+                            autoComplete="email"
                         />
                     </Form.Group>
 
@@ -71,6 +82,9 @@ function LoginForm({ setUserHasAccount }) {
                                     setPassword(event.target.value)
                                 }
                                 required
+                                aria-label="Mot de passe"
+                                aria-describedby="password-description"
+                                autoComplete="Mot de passe"
                             />
                             <span
                                 className="show-password-btn"
@@ -81,23 +95,24 @@ function LoginForm({ setUserHasAccount }) {
                         </div>
                     </Form.Group>
 
-                    <Button className="login-form-button" type="submit">
+                    <Button className="login-form-button" type="submit" aria-label="Valider la connexion">
                         Se connecter
                     </Button>
                 </Form>
 
-                <p>
+                <p className="login-text-link">
                     Pas encore de compte ?{" "}
                     <Link
                         className="login-link"
                         to="/register"
                         onClick={handleRegister}
+                        aria-label="Lien vers l'inscription"
                     >
                         Inscrivez-vous
                     </Link>
                 </p>
             </div>
-        </>
+        </div>
     );
 }
 

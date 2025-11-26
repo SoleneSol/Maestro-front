@@ -1,5 +1,5 @@
-@use "../var.scss";
-@use "../mixin.scss";
+@use "/src/mixin";
+@use "/src/var";
 
 .preview__list__title {
     text-align: center;
@@ -14,9 +14,6 @@
     gap: 1rem;
     padding: 0.5rem .5rem 1.5rem .5rem;
     justify-content: center;
-    /* mobile = 1 colonne par défaut */
-    // grid-template-columns: 1fr;
-
 
     @include mixin.desktop {
         flex-direction: row;
@@ -28,35 +25,12 @@
     margin: 3rem;
 }
 
-/* 2 colonnes pour tablettes / desktop */
-// @media (min-width: 768px) {
-//     .preview__list {
-//         grid-template-columns: repeat(2, 1fr);
-//     }
-// }
-
-/* 3 colonnes larges */
-// @media (min-width: 1200px) {
-//     .preview__list {
-//         grid-template-columns: repeat(3, 1fr);
-//     }
-// }
-
-/* assurer que chaque item prend toute la cellule */
-// .preview__item {
-//     // width: 100%;
-//     // display: block;
-//     box-sizing: border-box;
-// }
-
-/* Accordion compact par card */
 .preview-card-accordion {
     width: 100%;
     margin: 0;
     box-sizing: border-box;
 }
 
-/* garder l'en-tête compact */
 .preview-card-accordion .accordion-button {
     padding: 0.5rem;
     background: transparent;
@@ -64,12 +38,10 @@
     box-shadow: none;
 }
 
-/* corps compact */
 .preview-card-accordion .accordion-body {
     padding: 0.5rem;
 }
 
-/* header layout : preview à gauche, action à droite */
 .preview-card-accordion .preview__item__header {
     display: flex;
     align-items: center;
@@ -77,14 +49,12 @@
     width: 100%;
 }
 
-/* zone preview prend toute la place restante */
 .preview-card-accordion .preview__summary {
     flex: 1 1 auto;
     min-width: 0;
     margin-right: 0.25rem;
 }
 
-/* container des contrôles : côte à côte, sans marge superflue */
 .preview-card-accordion .preview__controls {
     display: inline-flex;
     align-items: center;
@@ -93,7 +63,6 @@
     margin-left: 0.25rem;
 }
 
-/* bouton collapse compact */
 .preview-card-accordion .collapse-button {
     padding: 0.15rem;
     margin: 0;
@@ -102,7 +71,6 @@
     border: none;
 }
 
-/* bouton edit collé */
 .preview-card-accordion .edit-button {
     padding: 0.15rem;
     margin: 0;
@@ -111,40 +79,28 @@
     border: none;
 }
 
-/* icônes plus petites et centrées */
 .preview-card-accordion .preview__controls .bi {
     font-size: 1.1rem;
     line-height: 1;
 }
 
-/* si le composant Preview a padding, on peut l'enlever via une classe si besoin */
-/* .preview-card-accordion .preview__summary .preview { padding-right: 0; } */
-
-/* Désactive le toggle par le bouton généré par Accordion.Header */
 .preview-card-accordion .accordion-button {
-  /* empêche le bouton natif d'intercepter les clics */
     pointer-events: none;
 }
 
-/* Masquer le chevron par défaut généré par Accordion.Header */
 .preview-card-accordion .accordion-button::after {
-    display: none !important;
+    display: none;
 }
 
-/* (optionnel) si tu veux que seul ton chevron controle l'ouverture,
-   garde pointer-events:none sur le bouton natif et réactive tes contrôles */
 .preview-card-accordion .accordion-button {
-  pointer-events: none; /* empêche le bouton natif d'interagir */
+    pointer-events: none;
 }
 
-/* réautorise l'interaction uniquement pour nos contrôles */
 .preview-card-accordion .preview__controls,
 .preview-card-accordion .preview__controls * {
     pointer-events: auto;
 }
 
-/* Option : si tu veux empêcher que cliquer sur le résumé (preview) toggle aussi,
-   tu peux rendre la zone summary non interactive : */
 .preview-card-accordion .preview__summary {
     pointer-events: none;
 }
@@ -161,6 +117,11 @@
     justify-content: center;
 }
 
+.form__mandatory {
+    text-align: center;
+    font-size: .7rem;
+}
+
 
 
 .admin__plus {
@@ -175,9 +136,9 @@
 }
 
 .plus__icon, .minus__icon {
-    color: lightgray;
+    color: var.$color-admin;
 }
 
 .plus__icon:hover, .minus__icon:hover {
-    color: grey;
+    color: #CE4B27;
 }

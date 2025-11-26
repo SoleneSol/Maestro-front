@@ -71,9 +71,9 @@ export async function getFilteredAdminProjects(status) {
 // Modifier le statut 
 // PATCH /api/admin/project/:idProjet
 //projectRouter.patch('/admin/project:id', projectsController.updateStatus)
-export async function updateProjectStatus(id, label) {
+export async function updateProjectStatus(id, status) {
     return api_axios
-        .patch(`/admin/project/${id}`,{label})
+        .patch(`/admin/project/${id}`,{status})
         .then(function (res) {
             console.log(res.data);
             return res.data;

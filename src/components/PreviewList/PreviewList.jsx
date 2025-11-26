@@ -11,7 +11,6 @@ import { PlusSquareFill, DashSquareFill } from "react-bootstrap-icons";
 
 function PreviewList({location}) {
 
-    const [selectedGenre, setSelectedGenre] = useState('');
     const [previewList, setPreviewList] = useState([]);
     const [genreList, setGenreList] = useState([]);
     const [componentTitle, setComponentTitle] = useState('');
@@ -20,7 +19,7 @@ function PreviewList({location}) {
 
     // gestion Accordion
     const [activeItem, setActiveItem] = useState(null);
-    const [selectedPreview, setSelectedPreview] = useState(null);
+    const [selectedPreview, setSelectedPreview] = useState(null); // utilisé dans UpdatePreviewForm
 
     const {userIs} = useContext(UserContext)
     
@@ -60,7 +59,6 @@ function PreviewList({location}) {
     function handleChange(e) {
         e.preventDefault();
         const genre = e.target.value;
-        setSelectedGenre(genre);
 
         if (genre == "") {
             getPreviewList();
@@ -99,26 +97,21 @@ function PreviewList({location}) {
 
     return (
         <>
-                <h1 className="preview__list__title">{componentTitle}</h1>
+                {location == '/compositions' ? <h1 className="preview__list__title">{componentTitle}</h1> : <h2 className="preview__list__title">{componentTitle}</h2>}
                 {location == '/compositions' && 
                 <div className="preview__list__form__container">
-                    {/* on a notre formulaire pour sélectionner un genre */}
                     <Form.Select size="lg" onChange={handleChange} className="genre__menu toggle-button" aria-label="Sort by genre">
                         
                         <option className="option-icon genre__item" value=''>Trier par genre</option>
-                        {/* On map sur la liste des genres */}
                         {genreList.length != 0 && genreList.map((genre) => (
-                            // On affiche le genre (genreList[index])
                             <option value={genre.label} key={genre.id} className="genre__item">{genre.label.charAt(0).toUpperCase() + genre.label.slice(1)}</option>
                         ))}
                     </Form.Select>
                 </div>
                 }
 
-                {/* Un Accordion autonome par preview — grille responsive */}
                 <section className="preview__list">
-                    {/* Ici, on map sur la liste des extraits */}
-                    {previewList.length > 0 ? previewList.map((preview) => (
+                    {(previewList != null && previewList.length > 0) ? previewList.map((preview) => (
                         <div className="preview__item" key={preview.id}>
                         <Accordion
                             className="preview-card-accordion"
@@ -131,7 +124,6 @@ function PreviewList({location}) {
                                         <div className="preview__summary">
                                             <Preview audiosrc={preview.link} title={preview.title} genres={preview.listGenres}/>
                                         </div>
-                                        {/* controls à droite : collapse + edit */}
                                         <div className="preview__controls">
                                             {userIs === 'admin' &&
                                                 <>
@@ -163,7 +155,7 @@ function PreviewList({location}) {
                                 </Accordion.Header>
                                 <Accordion.Body>
                                     {userIs === 'admin' &&
-                                        <UpdatePreviewForm id={preview.id} preview={preview} genreList={genreList} onSaved={handleSaved} />
+                                        <UpdatePreviewForm setSelectedPreview={setSelectedPreview} setActiveItem={setActiveItem} id={preview.id} preview={preview} genreList={genreList} onSaved={handleSaved} />
                                     }
                                 </Accordion.Body>
                             </Accordion.Item>

@@ -1,9 +1,13 @@
-@use "../var.scss";
-@use "../mixin.scss";
+@use "/src/mixin";
+@use "/src/var";
 
-h2 {
+.login-form-global {
+    padding-top: 2rem;
+}
+
+.login-form-headtitle {
     text-align: center;
-    padding-top: 5rem;
+    // padding-top: 5rem;
     font-family: var.$font-main;
     font-size: var.$font-size-h2;
 }
@@ -29,7 +33,7 @@ h2 {
         border: none;
     }
 
-    p {
+    .login-text-link {
         text-align: center;
         padding-top: 1rem;
 
@@ -56,12 +60,12 @@ h2 {
         position: absolute;
         right: 10px;
         top: 50%;
-        transform: translateY(-50%);
+        bottom: 50%;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #555; // couleur de base
+        color: #555; 
         transition: opacity 0.2s ease;
 
         svg {
@@ -78,8 +82,8 @@ h2 {
 
 // Styles Desktop
 @include mixin.desktop {
-    h2 {
-        padding-top: 10rem;
+    .login-form-headtitle {
+        // padding-top: 10rem;
         font-size: var.$font-size-h2;
     }
 
@@ -94,7 +98,7 @@ h2 {
             margin-bottom: 1.5rem;
         }
 
-        p {
+        .login-text-link {
             padding-top: 1.5rem;
         }
     }

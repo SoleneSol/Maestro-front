@@ -1,16 +1,16 @@
-@use "../style/var.scss";
-@use "../style/mixin.scss";
+@use "/src/mixin";
+@use "/src/var";
 
 #addDescription {
     margin: 3rem;
     padding: 1rem;
     border: solid 1px var.$color-admin;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
-        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .form__title {
@@ -27,11 +27,25 @@
     }
 }
 
+.description__form__group__container {
+    display: flex;
+    flex-direction: column;
+}
+
+.description__group__container {
+    display: flex;
+    flex-direction: column;
+    @include mixin.desktop {
+        flex-direction: row;
+    }
+}
+
 .form__group {
     margin: 1rem;
     display: flex;
     flex-direction: column;
     align-items: start;
+    justify-content: space-between;
     border: solid 1px var.$color-admin;
     padding: 1rem;
     border-radius: 10px;
@@ -46,9 +60,9 @@
     width: 100%;
 }
 
-.form__input {
-    margin-top: 0.5rem;
-}
+// .form__input {
+//     margin-top: 0.5rem;
+// }
 
 .form__button__container {
     display: flex;
@@ -74,10 +88,17 @@
 .description__icon__container {
     display: flex;
     justify-content: center;
+    margin: 1rem;
     cursor: pointer;
 }
 
+.plus__icon, .minus__icon {
+    color: var.$color-admin;
+}
 
+.plus__icon:hover, .minus__icon:hover {
+    color: #CE4B27;
+}
 
 
 

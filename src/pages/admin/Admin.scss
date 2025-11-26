@@ -1,9 +1,14 @@
-@use "../style/var";
-@use "../style/mixin";
+@use "/src/mixin";
+@use "/src/var";
+
+.dashbord-items {
+    margin: 1rem;
+    margin-top: 2rem;
+}
 
 .admin-page-title {
     justify-self: center;
-    margin-top: 3rem;
+    margin-top: 2rem;
 }
 
 .list-item {
@@ -17,9 +22,9 @@
     font-size: 1.8rem;
 }
 
-@media (min-width: var.$breakpoint-desktop) {
+@media (min-width: 992px) {
     .admin-container {
-        margin-top: 3rem;
+        margin-top: 2rem;
     }
 
     .contact-request-list-item {
@@ -41,14 +46,15 @@
 
 .component-admin-container {
     border: solid 1px var.$color-admin;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
 .admin-item-title {
     background-color: var.$color-admin;
     color: white;
     text-align: center;
-    padding: .7rem 0 .7rem 0;
+    padding: 0.7rem 0 0.7rem 0;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
 }

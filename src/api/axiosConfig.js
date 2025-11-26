@@ -26,19 +26,28 @@ export const useAxiosInterceptor = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    useEffect(() => {
-        //  si la route actuelle est "/" ou "/compositions",
-        // on reste / ré-affiche cette route,
-        // sinon on redirige vers /login
-        const redirectLoginOrKeep = () => {
-            const path = location?.pathname || "/";
-            if (path === "/" || path === "/compositions") {
-                // replace pour éviter d'empiler l'historique inutilement
-                navigate(path, { replace: true });
-            } else {
-                navigate("/login", { replace: true });
-            }
-        };
+useEffect(() => {
+    //  si la route actuelle est "/" ou "/compositions" ou /contact /legales /cgu /accessibility,
+    // on reste / ré-affiche cette route,
+    // sinon on redirige vers /login
+    const redirectLoginOrKeep = () => {
+        const path = location?.pathname || "/";
+        const validPaths = [
+            "/",
+            "/compositions",
+            "/contact",
+            "/legales",
+            "/cgu",
+            "/accessibility",
+        ];
+        if (validPaths.includes(path)) {
+            // replace pour éviter d'empiler l'historique inutilement
+            navigate(path, { replace: true });
+        } else {
+            navigate("/login", { replace: true });
+        }
+    };
+
 
         // --------------------------
         // Interceptor de réponse

@@ -10,7 +10,7 @@ import User from "./pages/user/User.jsx";
 import Legales from "./pages/legales/Legales.jsx";
 import CGU from "./pages/cgu/CGU.jsx";
 import Accessibility from "./pages/accessibility/Accessibility.jsx";
-import NotFound from "./pages/notfound/NotFound.jsx";
+import NotFound from "./pages/notfound/NotFound.jsx"; 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 
@@ -42,7 +42,7 @@ function App() {
               <Route path="/legales" element={<Legales />}></Route> 
               <Route path="/cgu" element={<CGU />}></Route> 
               <Route path="/accessibility" element={<Accessibility />}></Route> 
-              <Route path="*" element={<NotFound/>}></Route>
+              <Route path="*" element={<NotFound/>}></Route> 
             </Routes>
         </main>
         <Footer />

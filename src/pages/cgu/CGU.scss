@@ -1,0 +1,86 @@
+@use "/src/mixin";
+@use "/src/var";
+
+.cgu {
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+        text-align: center;
+        margin-top: 20px;
+        font-family: var.$font-main;
+        font-size: var.$font-size-h2;
+    }
+
+    &__date {
+        font-family: var.$font-alt;
+        font-size: var.$font-size-base;
+        margin: 0.5rem 1rem;
+    }
+
+    &__intro {
+        margin: 1rem;
+        font-family: var.$font-alt;
+        font-size: var.$font-size-base;
+        padding-bottom: 20px;
+        line-height: 3;
+    }
+
+    &__main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__section {
+        width: 100%;
+        max-width: 900px;
+        margin-top: 15px;
+    }
+
+    &__subtitle {
+        font-family: var.$font-main;
+        text-align: center;
+        font-size: 1.5rem;
+        margin-top: 15px;
+    }
+
+    &__text {
+        text-align: left;
+        line-height: 3;
+        margin: 1rem;
+        font-family: var.$font-alt;
+        font-size: var.$font-size-base;
+        padding-bottom: 20px;
+    }
+
+    &__list {
+        
+        margin: 1rem;
+        padding-left: 2rem;
+    }
+
+    &__list-item {
+    font-family: var.$font-alt;
+        font-size: var.$font-size-base;
+        line-height: 3;
+    }
+}
+
+@include mixin.desktop {
+    .cgu {
+                &__text {
+            text-align: center;
+        }
+
+        &__list {
+            margin: 0 3rem 2rem; // exemple : plus de marge sur desktop
+            padding-left: 2rem;
+        }
+
+        &__list-item {
+            font-size: var.$font-size-base ;
+            line-height: 3;
+        }
+    }
+}

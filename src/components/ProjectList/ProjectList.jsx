@@ -13,104 +13,88 @@ import Container from 'react-bootstrap/Container';
 
 
 function ProjectList() {
-    // permet de gérer l'affichage de la liste de mes projets et leur status
-    const [projectList, setProjectList] = useState([]); // Liste des projets affichés
-    const [projectFilter, setProjectFilter] = useState (''); // Filtre appliqué aux projets
-    const [statusList, setStatusList] = useState ([]); // Liste des statuts disponibles
-    const [newStatus, setNewStatus] = useState (''); 
+
+    const [projectList, setProjectList] = useState([]); // liste des projets
+    const [statusList, setStatusList] = useState ([]); // tous les statuts disponibles
+
 
     
-    // Modal
+    // fenêtre Modal (être vous sûr de vouloir supprimer)
     const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false); // ferme la modal
+    const handleShow = () => setShow(true); // ouvre la modal
 
 
 
-    // je récupère le rôle user dans le UserContext
+    // Récupère les infos du UserContext
     const {userIs,refreshList, desactiveRefreshProjectList} = useContext(UserContext);
     console.log('role après context', userIs);
-
+    // Permet de rediriger l'utilisateur
     const navigate = useNavigate();
 
 
-    // je récupère les projets dans l'API coté back (Lister tous les projects)
+    // charge les projets selon le rôle de l’utilisateur
     async function getProjects() {
+        // si VISITOR
         if (userIs === 'visitor') {
             navigate("/");   
         }
+        // si CLIENT
         if (userIs === 'client'){ 
-            // l'api me renvoie la liste des projets (si USER)
             const result = await getAllProjectList();
             setStatusList (result.Liststatus);
-                // les projets se mettent dans le usestate pour les afficher
             setProjectList(result.projects);
-        } else { 
-            // sinon l'api me renvoie la liste des projets ADMIN
+        } else if (userIs === 'admin'){ 
+            // si ADMIN
             const result = await getAllAdminProjects();
             setStatusList (result.Liststatus);
-                // les projets se mettent dans le usestate pour les afficher
             setProjectList(result.projects);
         }
     }
 
 
-    // je récupère les status du projet dans l'API coté back (Trier les projets par filtre)
+    // charge les projets filtrés par statut
     async function getStatusProject(status) {
-        // l'api me renvoie les projets filtrés suivant le status choisis (si USER)
+        // si CLIENT
         if (userIs === 'client'){ 
             const result  = await getFilteredProjectList(status);
             console.log("client:",result.projects);
-            // je mets la liste filtrés dans le usestate pour les afficher
             setProjectList(result.projects);
-        } else {
+        } else if (userIs === 'admin') {
+            // si ADMIN
             const result  = await getFilteredAdminProjects(status);
             console.log("admin:", result);
-            // je mets la liste filtrés dans le usestate pour les afficher
             setProjectList(result.projects);
         }
     }
 
 
     
-    // la fonction est déclénchée quand la valeur du filter est changée
+    // met à jour l’affichage selon le filtre choisi
     function handleChange(e) {
         e.preventDefault(); // empêche le rechargement par défaut
         const status = e.target.value;
-        console.log("status : ", status);
-        setProjectFilter(status); // Met à jour le status sélectionné
-        // console.log("projectFilter : ", projectFilter);
 
         if (status === "") {
-            getProjects();
-            // si le user selectionne tous les projet donc la valeur vide ""
-            // on affiche toute la liste des projets
+            getProjects(); // affiche toute la liste des statut
         } else {
-            // console.log("else handlechange :");
-            
-            getStatusProject(status);
-            // sinon on filtre suivant le status qu'aura choisi le user (en cours, terminé, etc)
+            getStatusProject(status); // affiche le statut choisi 
         }
     }
 
-    console.log('status list : ', statusList)
 
-    // met à jour le status du projet
-    function handleChangeStatus(e) {
+    // modifie le statut d’un projet
+    async function handleChangeStatus(e) {
         e.preventDefault();
-        console.log(e.target);
-        
-        setNewStatus(e.target.value);
-        console.log('id du target selected :', e.target.value);
-        console.log('xxxx:', e.target.selectedOptions[0].id);
-        const result = updateProjectStatus(e.target.selectedOptions[0].id, e.target.value);
-        console.log(newStatus);
+        await updateProjectStatus(e.target.selectedOptions[0].id, e.target.value);
+        // e.target c’est le <select>
+        // e.target.value c’est le nouveau statut choisi (ex : "en cours")
+        // e.target.selectedOptions[0].id  c’est l’ID du projet
     }
 
-        // supprimer un projet : admin
+        // supprime un projet
         async function handleDelete(id) {
-            // on appelle l'API pour supprimer le projet dans la BDD
             try {
                 await deleteProject(id);
                 getProjects();
@@ -120,11 +104,8 @@ function ProjectList() {
         };
 
 
-
-    // useeffect s'exécute quand le composant apparait sur la page
+    // recharge les projets
     useEffect(() => {
-        // quand le composant s'affiche, je lance ma fonction getProjects()
-        // pour aller chercher les projets dans l'API
         getProjects();
         desactiveRefreshProjectList();
     }, [refreshList]);
@@ -133,12 +114,11 @@ function ProjectList() {
 return (
     <section className="title__container">
 
-
-        {/* TRIER LES PROJETS PAR STATUS */}
-        <Form.Select size="lg"onChange={handleChange} aria-label="Sort by genre" className="mb-4">
+        {/* FILTRER LES PROJETS */}
+        <Form.Select size="lg"onChange={handleChange} aria-label="Trier les projets par statut" className="mb-4 select-margin">
                     
             <option value=''>Trier par statut</option>
-            {/* Si la liste de projets et de statuts n'est pas vide, on affiche la liste des status, sinon on affiche "Pas de statut"*/}
+            {/* Si la liste de projets & statut n'est pas vide, on affiche la liste des status, sinon on affiche "Pas de statut"*/}
             {(projectList?.length > 0 && statusList.length != 0) ? statusList.map((status) => (
                 <option value={status} key={status}>{status}</option>
             ))
@@ -150,45 +130,51 @@ return (
         {/* LISTE DES PROJETS */}
         <Container>
         <Row className="projects__container">
-        {/* si projectList existe (!=null) et n’est pas vide (length != 0), alors j’affiche la liste des projets avec map, sinon on affiche pas de projet */}
+        {/* si projectList existe (!=null) et n’est pas vide (length != 0), alors affiche la liste des projets avec map, sinon on affiche pas de projet */}
         {(projectList != null && projectList.length != 0) ? projectList.map((project) => (
             <Col key={project.id} className="mb-5" md={12}>
                 <Form >
                     <Card 
-                        className="border border-primary rounded-3 shadow-sm"
+                        className="projects__card"
                         style={{
                             width: "100%",
                             border: "2px" ,
                         }}
                     >
                     
-                        {/* SUPPRESSION PROJET*/}
+                        {/* SUPPRESSION PROJET pour l'admin*/}
                         <Card.Body>
-                            <Row className="align-items-center">
-                                {/* ICÔNE POUBELLE */}
+                            <div className="project__card__row">
+                                {/* ICÔNE POUBELLE  */}
                                 <Col xs="auto">
-                                    < Trash size={30} onClick={(e) => {e.preventDefault(); handleShow() }}/>
-                                
-                                        <Modal show={show} onHide={handleClose}>
-                                            <Modal.Header closeButton>
-                                                <Modal.Title>Supprimer un projet</Modal.Title>
-                                            </Modal.Header>
-                                                <Modal.Body>Etes-vous sur de vouloir le supprimer ?</Modal.Body>
-                                                    <Modal.Footer>
-                                                        <Button variant="secondary" onClick={handleClose}>
-                                                            Annuler
-                                                        </Button>
-                                                        <Button variant="primary" onClick={(e) => {e.preventDefault(); handleDelete(project.id); handleClose()}}>
-                                                            Supprimer
-                                                        </Button>
-                                                    </Modal.Footer>
-                                        </Modal>
+                                {userIs === "admin" && (
+                                    <>
+                                        < Trash className="project__trash__icon"
+                                            size={30} onClick={(e) => {e.preventDefault(); handleShow() }}
+                                        />
+                                            <Modal show={show} onHide={handleClose}>
+                                                <Modal.Header closeButton>
+                                                    <Modal.Title>Supprimer un projet</Modal.Title>
+                                                </Modal.Header>
+                                                    <Modal.Body>Etes-vous sur de vouloir supprimer le projet ?</Modal.Body>
+                                                        <Modal.Footer>
+                                                            <Button variant="secondary" onClick={handleClose}>
+                                                                Annuler
+                                                            </Button>
+                                                            <Button variant="primary" onClick={(e) => {e.preventDefault(); handleDelete(project.id); handleClose()}}>
+                                                                Supprimer
+                                                            </Button>
+                                                        </Modal.Footer>
+                                            </Modal>
+                                    </>
+                                )}
                                 </Col>
 
                                 <Col className="text-center ">
-                                {/* TITRE PROJET "en cours" */}
+                                {/* TITRE/NOM du PROJET "en cours" */}
                                     <Badge
                                         pill
+                                        aria-label="Nom du projet"
                                         style={{
                                             color: "black",
                                             fontSize: "0.9rem",
@@ -199,12 +185,27 @@ return (
                                         {project.name}
                                     </Badge>
                                     
-                                    {/* DESCRIPTION/RESUME PROJET */}
+                                    {/* DESCRIPTION */}
                                     <p className="border rounded">
                                         {project.resume}
                                     </p>
 
-                                    {/* STATUS*/}
+                                    {/* STATUS du projet CLIENT*/}                                    
+                                    {userIs === 'client' &&
+                                        <Badge
+                                            pill 
+                                            aria-label="Statut du projet"
+                                            style={{
+                                                color: "black",
+                                                fontSize: "0.9rem",
+                                            }}
+                                            className="deadline__badge d-block"
+                                            bg={userIs === "admin" ? 'color-admin' : 'color-client'}
+                                        >
+                                            {project.status}
+                                        </Badge>
+                                    }
+                                    {/* STATUS du projet ADMIN*/}     
                                     {userIs === 'admin' &&
                                     <div>
                                         <section className="update__status">
@@ -223,21 +224,24 @@ return (
                                         </section>
                                     </div>
                                     }       
-
+                                    
                                     {/* DEADLINE*/}
-                                    <Badge
-                                        pill 
-                                        style={{
-                                            color: "black",
-                                            fontSize: "0.9rem",
-                                        }}
-                                        className="deadline__badge d-block"
-                                        bg={userIs === "admin" ? 'color-admin' : 'color-client'}
-                                    >
-                                        {project.deadline}
-                                    </Badge>
+                                    {project.deadline !=null &&
+                                        <Badge
+                                            pill 
+                                            aria-label="Date limite du projet"
+                                            style={{
+                                                color: "black",
+                                                fontSize: "0.9rem",
+                                            }}
+                                            className="deadline__badge d-block"
+                                            bg={userIs === "admin" ? 'color-admin' : 'color-client'}
+                                        >
+                                            {project.deadline}
+                                        </Badge>
+                                    }
                                 </Col>
-                            </Row>
+                            </div>
                         </Card.Body>
                     </Card>
                 </Form>

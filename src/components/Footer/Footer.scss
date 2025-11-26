@@ -1,5 +1,5 @@
-@use "../style/var.scss";
-@use "../style/mixin.scss";
+@use "/src/mixin";
+@use "/src/var";
 
 footer {
     position: sticky;
@@ -48,7 +48,7 @@ footer {
             align-items: center;
 
             a {
-                color: var.$color-title-and-text;
+                color: var.$color-title-text;
                 font-size: 1.5rem;
                 text-decoration: none;
                 display: flex;
@@ -60,8 +60,9 @@ footer {
                 }
 
                 span {
+                    line-height: 0;
                     font-size: 0.5rem;
-                    color: var.$color-title-and-text;
+                    color: var.$color-title-text;
                     font-family: var.$font-main;
                 }
 
@@ -88,7 +89,7 @@ footer {
                 font-family: var.$font-main;
                 font-weight: lighter;
                 font-size: var.$font-size-base;
-                color: var.$color-title-and-text;
+                color: var.$color-title-text;
                 padding: 10px 16px;
                 text-align: center;
             }
@@ -126,7 +127,7 @@ footer {
 
             li a {
                 text-decoration: none;
-                color: var.$color-title-and-text;
+                color: var.$color-title-text;
                 font-family: var.$font-main;
                 font-weight: 500;
                 font-size: var.$font-size-base;

@@ -3,15 +3,17 @@ import "./NotFound.scss";
 
 function NotFound() {
     return (
-        <div className="notfound-container">
-            <h1>404</h1>
-            <h2>Page non trouvée</h2>
-            <p>La page que vous rechercher est introuvable</p>
-            <Link to="/">Retour à l'accueil</Link>
+        <div>
+            <h1 className="title-main">404</h1>
+            <h2 className="subtitle">Page non trouvée</h2>
+            <p className="text-center">
+                La page que vous recherchez est introuvable
+            </p>
+            <div className="link-container">
+                <Link to="/">Retour à l'accueil</Link>
+            </div>
         </div>
-
-    )
+    );
 }
-
 
 export default NotFound;

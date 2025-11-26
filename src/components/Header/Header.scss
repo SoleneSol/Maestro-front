@@ -1,5 +1,5 @@
-@use "../style/var.scss";
-@use "../style/mixin.scss";
+@use "/src/mixin";
+@use "/src/var";
 
 header {
     position: sticky;
@@ -83,7 +83,7 @@ header {
 
                 li a {
                     text-decoration: none;
-                    color: var.$color-title-and-text;
+                    color: var.$color-title-text;
                     font-family: var.$font-main;
                     font-weight: 500;
                     font-size: var.$font-size-base;

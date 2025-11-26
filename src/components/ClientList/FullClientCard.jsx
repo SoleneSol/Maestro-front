@@ -1,32 +1,25 @@
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import ClientCard from "./Clientcard/ClientCard.jsx";
 import CompanyCard from "./CompanyCard/CompanyCard.jsx";
 import "./FullClientCard.scss";
 import Form from "react-bootstrap/Form";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getAllUsers, getSortedUsers } from "../../api/apiUser.js";
 
 function FullClientCard() {
-    // Recuperer la liste des clients et les faires passer aux composants
     const [clients, setClients] = useState([]);
 
     async function getClients() {
         const clients = await getAllUsers();
         setClients(clients);
-        console.log("Dans ma page admin :", clients);
     }
 
-    // ici ton param a le nom d'un  state attention
     async function getSortedClients(sortedUsers) {
         const clients = await getSortedUsers(sortedUsers);
         setClients(clients);
-        console.log("Dans ma page admin :", clients);
     }
 
     function handleChange(event) {
-        // ne pas mettre event.preventDefault() dans un onChange de select !!!
-
         if (event.target.value === "") {
             getClients();
         } else {
@@ -42,7 +35,7 @@ function FullClientCard() {
         <>
             <div className="client-sort-form-select">
                 <Form.Select
-                    aria-label="client-sort-form-select"
+                    aria-label="Formulaire de tri des clients par nom ou prénom"
                     onChange={handleChange}
                 >
                     <option value="">Trier la liste des clients</option>
